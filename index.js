@@ -1,4 +1,4 @@
-const port = 4000;
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -8,8 +8,10 @@ const path = require('path');
 const cors = require('cors');
 const { type } = require('os');
 const { log } = require('console');
+const { config } = require('process');
 app.use(express.json());
 app.use(cors());
+const port = process.env.PORT;
 
 // database connection with mongodb
 mongoose.connect("mongodb+srv://6005168766pd:Dogra%402005@cluster0.qein0sa.mongodb.net/e-commerce?retryWrites=true&w=majority");
