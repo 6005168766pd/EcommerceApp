@@ -14,12 +14,12 @@ const ShopcontextProvider = (props) => {
   const [cartItems, setcartItems] = useState(getDefaultCart());
 
   useEffect(() => {
-    fetch("http://localhost:4000/allproducts")
+    fetch("https://ecommerce-app-backend-snc9.onrender.com/allproducts")
       .then((res) => res.json())
       .then((data) => setall_product(data));
 
     if (localStorage.getItem("auth-token")) {
-      fetch("http://localhost:4000/getdata", {
+      fetch("https://ecommerce-app-backend-snc9.onrender.com/getdata", {
         method: "POST",
         headers: {
           Accept: "application/form-data",
@@ -53,7 +53,7 @@ const ShopcontextProvider = (props) => {
   const removeFromCart = (itemId) => {
     setcartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (localStorage.getItem("auth-token")) {
-      fetch("http://localhost:4000/removefromcart", {
+      fetch("https://ecommerce-app-backend-snc9.onrender.com/removefromcart", {
         method: "POST",
         headers: {
           Accept: "application/formdata",
