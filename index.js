@@ -11,7 +11,7 @@ const { log } = require('console');
 const { config } = require('process');
 app.use(express.json());
 app.use(cors());
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 
 // database connection with mongodb
 mongoose.connect("mongodb+srv://6005168766pd:Dogra%402005@cluster0.qein0sa.mongodb.net/e-commerce?retryWrites=true&w=majority");
