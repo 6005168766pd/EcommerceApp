@@ -5,7 +5,7 @@ import Item from "../Item/Item";
 const Newcollections = () => {
   const [new_collection, setnew_coolection] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:4000/newcollections")
+    fetch("https://ecommerce-app-backend-snc9.onrender.com/newcollections")
       .then((res) => res.json())
       .then((data) => setnew_coolection(data));
   }, []);
