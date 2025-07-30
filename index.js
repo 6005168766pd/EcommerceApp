@@ -3,7 +3,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');  // for storing thre uploaded images in this folder
+const multer = require('multer');
+const { v2: cloudinary } = require('cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const path = require('path');
 const cors = require('cors');
 const { type } = require('os');
@@ -13,6 +15,21 @@ app.use(express.json());
 app.use(cors());
 const port = process.env.PORT || 4000;
 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'ecommerce-images',
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+  },
+});
+
+const upload = multer({ storage: storage });
 // database connection with mongodb
 mongoose.connect("mongodb+srv://6005168766pd:Dogra%402005@cluster0.qein0sa.mongodb.net/e-commerce?retryWrites=true&w=majority");
 //Api creation
@@ -20,26 +37,15 @@ app.get("/", (req, res) => {
   res.send("express app is running");
 })
 
-// Image storage Engine
-
-const storage = multer.diskStorage({
-  destination: './upload/images',
-  filename: (req, file, cb) => {
-    return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
-    )
-  }
-})
-const upload = multer({ storage: storage })
-
 // Creating Upload Endpoint for images
 app.use('/images', express.static('upload/images'))
 
 app.post("/upload", upload.single('product'), (req, res) => {
   res.json({
     success: 1,
-    image_url: `http://localhost:${port}/images/${req.file.filename}`
-  })
-})
+    image_url: req.file.path,
+  });
+});
 // Schema for creating Products
 const Product = mongoose.model("Product", {
   id: {
