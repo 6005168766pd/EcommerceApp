@@ -37,6 +37,14 @@ const Addproduct = () => {
         responseData = data;
       });
     if (responseData.success) {
+      setimage(false);
+      setproductDetails({
+        name: "",
+        image: "",
+        category: "women",
+        new_price: "",
+        old_price: "",
+      });
       product.image = responseData.image_url;
       console.log(product);
       await fetch("https://ecommerce-app-backend-snc9.onrender.com/addproduct", {
